@@ -96,17 +96,38 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+--Criar a pasta config
+
+--Criar a pasta database e dentro a pasta migrations
+
+--Criar pastas da arquitetua MVC (Model, Views e Controllers)
+  -> Pasta App
+    -> Pasta Controllers e Models
+
 --Instalar o Sequelize
 
 yarn add sequelize
 
 yarn add sequelize-cli -D
 
+--Criar e configrar arquivo .sequelizerc, mapeando os caminhos até
+--os nossos arquivos de configuração
+
+const { resolve } = require('path');
+
+module.exports = {
+  config: resolve(__dirname, 'src', 'config', 'database.js'),
+  'models-path': resolve(__dirname, 'src', 'app', 'models'),
+  'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
+  'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
+};
+
+--Instalar as dependências do Sequelize para Postgres
+
 yarn add pg pg-hstore
 
---Configurar o postgress no Sequelize
- ->Criar a pasta config
-  ->Criar o arquivo database.js
+--Criar o arquivo database.js e configurar para permitir comunicação
+--do Sequelize com o banco de dados
 
 module.exports = {
   dialect: 'postgres',
@@ -121,11 +142,109 @@ module.exports = {
   },
 };
 
---Criar a pasta database e dentro a pasta migrations
-
 --Rodar o comando e criar o primeiro arquivo de migration
-  ->yarn sequelize migration:create --name=create=users
 
---Criar o arquivo de migration
+yarn sequelize migration:create --name=create=users
 
+--Configurar o arquivo de migration
 
+--Rodar comando para executar a migration
+
+yarn sequelize db:migrate
+
+--Criar arquivo User.js dentro da pasta models
+
+import Sequelize, { Model } from 'sequelize';
+
+class User extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        name: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password_hash: Sequelize.STRING,
+      },
+      {
+        sequelize,
+      }
+    );
+  }
+}
+
+export default User;
+
+--Utilizar a funcionalidade seeds para cadastrar
+--automaticamente um usuário administrador
+
+--Gerar um arquivo de seeds
+
+yarn sequelize seed:generate --name admin-user
+
+--Instalar a extensão bcrypt para gerar o hash do password
+
+yarn add bcryptjs
+
+--Configurar o arquivo de seeds
+
+const bcrypt = require("bcryptjs");
+
+module.exports = {
+  up: QueryInterface => {
+    return QueryInterface.bulkInsert(
+      "users",
+      [
+        {
+          name: "Distruidora FastFeet",
+          email: "admin@fastfeet.com",
+          password_hash: bcrypt.hashSync("123456", 8),
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      ],
+      {}
+    );
+  },
+
+  down: () => {}
+};
+
+--Gerar o seed
+
+yarn sequelize db:seed:all
+
+--Criar estrutura de autenticação com método JWT
+
+--Criar arquivo SessionController.js na pasta controllers
+
+--Instalar extensão JasonWebtToken
+
+yarn add jsonwebtoken
+
+--Criar método de comparar senha com hash dentro do arquivo User.js
+
+checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
+  }
+
+--Criar um arquivo auth.js dentro da pasta config
+  -> Na pasta colocar a chave do token gerado pelo site md5online.com
+  -> Colocar também o tempo de expiração do token
+
+export default {
+  secret: '42fb6affe49d265dfe5ed06b8d96b320',
+  expiresIn: '7d',
+};
+
+--Implementar código do SessionController.js
+
+ token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
+      })
+
+--Colocar uma nova rota para chamar o SessionController
+
+--Criar validação para os dados de entrada na autenticação
+
+--Instalar a extensão Yup
+
+yarn add yup
