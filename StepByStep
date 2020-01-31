@@ -1,0 +1,131 @@
+--Iniciar o Yarn na pasta do projeto
+
+yarn init -y
+
+--Instalar o ExpressJS
+
+yarn add express
+
+--Instalar o Nodemon
+
+yarn add nodemon -D
+
+--Instalar Sucrase
+
+yarn add sucrase nodemon -D
+
+--Alterar o package.json
+
+"scripts": {
+    "dev": "nodemon src/server.js",
+    "dev:debug": "nodemon --inspect src/server"
+  },
+
+--Criar o nodemon.json
+
+{
+  "execMap": {
+    "js":"node -r sucrase/register"
+  }
+}
+
+--Alterar o launch.json
+
+      "request": "attach",
+      "protocol": "inspector",
+
+--Criar pasta src
+  -> criar app.js, server.js, routes.js
+
+--Configurar servidor no app.js
+  -> criar class App
+
+--Configurar arquivo server.js
+
+--Configurar arquivo routes.js
+  -> Exportando a class routes
+
+--Instalar Eslint
+
+yarn add eslint -D
+
+--Inicializar Eslint
+
+yarn eslint --init
+
+--Excluir o arquivo package-lock.json
+  -> dar comando yarn para atualiar o package.json
+
+--Instalar Prettier
+
+yarn add prettier eslint-config-prettier eslint-plugin-prettier -D
+
+--Configurar arquivo .eslintrc.js
+
+extends: [
+    "airbnb-base",
+    "prettier"
+  ],
+plugins: ["prettier"],
+
+rules: {
+    "prettier/prettier": "error",
+    "linebreak-style": 0,
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "camelcase": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
+  },
+
+--Criar e configurar o arquivo .prettierrc
+
+{
+  "singleQuote": true,
+  "trailingComma": "es5"
+}
+
+--Clicar com o lado direito do mouse e
+--Criar e configurar .editorconfig
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+--Instalar o Sequelize
+
+yarn add sequelize
+
+yarn add sequelize-cli -D
+
+yarn add pg pg-hstore
+
+--Configurar o postgress no Sequelize
+ ->Criar a pasta config
+  ->Criar o arquivo database.js
+
+module.exports = {
+  dialect: 'postgres',
+  host: 'localhost',
+  username: 'postgres',
+  password: 'docker',
+  database: 'gobarber',
+  define: {
+    timestamps: true,
+    underscored: true,
+    underscoredAll: true,
+  },
+};
+
+--Criar a pasta database e dentro a pasta migrations
+
+--Rodar o comando e criar o primeiro arquivo de migration
+  ->yarn sequelize migration:create --name=create=users
+
+--Criar o arquivo de migration
+
+
