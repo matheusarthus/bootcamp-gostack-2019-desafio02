@@ -270,8 +270,27 @@ export default {
 
 --Colocar uma nova rota para chamar o SessionController
 
+--Criar tabela 'recipient' no banco para o cadastro dos destinatários
+  ->Criar nova migration para a configuração da tabela
+    ->Rodar comando 'yarn sequelize db:migrate' para criar a tabela
+
+--Criar model 'Recipient.js' para a tabela recipient
+
+--Colocoar no loader de Models, arquivo index.js dentro
+--da pasta database, o novo modelo Recipient
+
+--Criar novo controller, RecipientController.js
+  ->Criar e configurar novo controller
+    ->Tanto o método store, de criação, quanto o update, de alteração
+
+--Criar Middleware de autenticação (validação do login)
+
+
+
 --Criar validação para os dados de entrada na autenticação
 
 --Instalar a extensão Yup
 
 yarn add yup
+
+--
