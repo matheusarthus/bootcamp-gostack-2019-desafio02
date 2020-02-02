@@ -30,6 +30,39 @@ class RecipientController {
       },
     });
   }
+
+  async update(req, res) {
+    const { name } = req.body;
+
+    const recipient = await Recipient.findOne({
+      where: { name },
+    });
+
+    if (!recipient) {
+      return res.status(400).json({ erro: 'Recipient does not exist.' });
+    }
+
+    const {
+      id,
+      logradouro,
+      numero,
+      cidade,
+      estado,
+      cep,
+    } = await recipient.update(req.body);
+
+    return res.json({
+      id,
+      name,
+      adress: {
+        logradouro,
+        numero,
+        cidade,
+        estado,
+        cep,
+      },
+    });
+  }
 }
 
 export default new RecipientController();

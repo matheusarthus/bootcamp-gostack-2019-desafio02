@@ -284,6 +284,22 @@ export default {
     ->Tanto o método store, de criação, quanto o update, de alteração
 
 --Criar Middleware de autenticação (validação do login)
+  ->Criar pasta middlewares em app e dentro o arquivo auth.js
+    ->Configurar middleware de autenticação
+      ->Inserir middleware no arquivo routes
+
+--Criar método update dentro do RecipientController.js para a
+--atualização dos cadastros dos destinatários
+  ->Criar nova rota chamando o método update
+
+
+
+
+
+
+
+
+
 
 
 
