@@ -1,7 +1,24 @@
+import * as Yup from 'yup';
 import Recipient from '../models/Recipient';
 
 class RecipientController {
   async store(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      logradouro: Yup.string().required(),
+      numero: Yup.number(),
+      complemento: Yup.string(),
+      cidade: Yup.string().required(),
+      estado: Yup.string().required(),
+      cep: Yup.number()
+        .required()
+        .max(99999999),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation Fail' });
+    }
+
     const recipientExist = await Recipient.findOne({
       where: { name: req.body.name },
     });
@@ -14,6 +31,7 @@ class RecipientController {
       name,
       logradouro,
       numero,
+      complemento,
       cidade,
       estado,
       cep,
@@ -24,6 +42,7 @@ class RecipientController {
       adress: {
         logradouro,
         numero,
+        complemento,
         cidade,
         estado,
         cep,
@@ -32,6 +51,20 @@ class RecipientController {
   }
 
   async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      logradouro: Yup.string(),
+      numero: Yup.number(),
+      complemento: Yup.string(),
+      cidade: Yup.string(),
+      estado: Yup.string(),
+      cep: Yup.number().max(99999999),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation Fail' });
+    }
+
     const { name } = req.body;
 
     const recipient = await Recipient.findOne({
@@ -46,6 +79,7 @@ class RecipientController {
       id,
       logradouro,
       numero,
+      complemento,
       cidade,
       estado,
       cep,
@@ -57,6 +91,7 @@ class RecipientController {
       adress: {
         logradouro,
         numero,
+        complemento,
         cidade,
         estado,
         cep,

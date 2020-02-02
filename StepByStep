@@ -292,21 +292,24 @@ export default {
 --atualização dos cadastros dos destinatários
   ->Criar nova rota chamando o método update
 
-
-
-
-
-
-
-
-
-
-
-
 --Criar validação para os dados de entrada na autenticação
 
 --Instalar a extensão Yup
 
 yarn add yup
 
---
+--Modificar SessionController.js para validar a entrada de dados
+--no momento do login do Adm
+  ->A extensão Yup validará a entrada do e-mail e da senha
+    ->Schema validation
+
+const schema = Yup.object().shape({
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string().required(),
+    });
+
+--Modificar o RecipientController.js para validar a entrada de dados
+--no momento da criação e atualização do cadastro do recipient
+  ->A extensão validará
